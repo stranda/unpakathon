@@ -1,0 +1,14 @@
+Package: unpakathon
+Title: Code Used and Data Needed to work with unpak data
+Version: 0.0.0.10
+Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut", "cre"))
+Description: Houses unpak data snapshot, supporting code and vignettes
+Depends:
+    R (>= 3.2.3)
+License: What license is it under?
+LazyData: true
+RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown,
+    reshape
+VignetteBuilder: knitr

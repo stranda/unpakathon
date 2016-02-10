@@ -1,0 +1,125 @@
+---
+title: "Getting going with unpak data"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting going with unpak data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The unpakathonJan2016 package is primarily a datafreeze of the unpak database at the end of Jan 2016.  
+
+This vignette shows how to interact with these data, once the package is installed and loaded into the current R session
+
+load the library
+```{r}
+library(unpakathonJan2016)
+```
+
+#Tables
+
+There are several tables available, each with some sort of help description that you can access by typing ?<tbl>  (e.g. ?phenolong or ?independent)
+
+Here are the tables at the moment and  a list of their current column names
+
+```{r}
+#phenolong: long format for all the phenotypic data
+names(phenolong)
+#phenowide: wide (typical) format for phenotypic data in phenolong
+names(phenowide)
+#independent: a table of indepenent data, mostly gene expression and protein expression 
+#indexed by both SALK_Line and Gene
+names(independent)
+##tdna: tdna data we know what it is.  indexed by accession
+names(tdna)
+#geneont The tair10 gene ontology indexed by gene
+names(geneont)
+```
+
+#Experiments and Meta Experiments
+The experiment table is sort of "subexperiment-oriented". the database now provides a way to lump all the data associated with experiments 1a1, 1a2, 1a3, etc into a meta.experiment called "1".  This provides a quick way to do subsetting of the huge data set:
+```{r}
+unique(phenolong[,c("experiment","meta.experiment")])
+```
+
+So, to subset the data to exclude farms one could do a couple of easy lines of code.  I'm using dplyr throughout on this document, btw.
+```{r}
+library(dplyr)
+unique(phenolong$experiment)
+nofarm.long <- phenolong %>% filter(meta.experiment!='farm')
+unique(nofarm.long$experiment)
+```
+Or maybe you only want to look at the distribution of individual fruitnums for experiment1
+```{r}
+exp1 <- phenolong %>% filter(meta.experiment=="1") %>% filter(variable=="fruitnum") 
+library(ggplot2) #might as well use ggplot to start with
+ggplot(data=exp1, aes(value, fill=experiment)) + geom_histogram(binwidth=50)
+```
+
+Here's the same exercise but getting averages for every replicate within a growth chamber within an experiment
+
+```{r}
+exp1mn <- phenolong %>% filter(meta.experiment=="1") %>%
+  filter(variable=="fruitnum") %>%
+  group_by(experiment,accession) %>%
+  summarise(value=mean(value,na.rm=T))
+ggplot(data=exp1mn, aes(value, fill=experiment)) + geom_histogram(binwidth=50)
+```
+
+I've done all of the above with the long format, but similar approaches could be used with the wide format in phenowide
+
+For example, it is arguably easier to compare phenotypes when they are in the wide format
+
+```{r}
+exp1 <- phenowide %>% filter(meta.experiment=="1")
+ggplot(data=exp1,aes(x=days.to.bolt,y=fruitnum))+geom_point()
+```
+might be nice to see whats with that point at 765 fruits
+
+#Merging with other data
+The information in the other tables can be compared to phenotypes through merging.
+
+Say you wanted to look at how insertion location might influence phenotype.  You could merge in the 'independent' table and look at the result
+
+```{r}
+newdf <- left_join(phenolong,independent) %>% filter(variable=="fruitnum")
+ggplot(data=newdf, aes(x=InsertLocation, y=log(value+1)))+geom_boxplot()
+```
+
+or you could look at expression at flower stage 9
+```{r}
+ggplot(data=newdf, aes(x=AverageExpressFlowerStage9, y=log(value+1)))+geom_point()
+```
+
+#Correcting phenotypes
+
+Everything so far has been performed on uncorrected phenotypes.
+
+We can correct phenotypes based on the Treatment, Experiment, and Facility combinations
+
+Here's an example correcting for phytometers
+
+```{r}
+library(reshape)
+plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% cast(fun.aggregate=mean)
+
+
+plotadj <- phytcorrect(phenolong,c("fruitnum","days.to.bolt"),c("plantID","treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+
+plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+
+```
+
+And here correcting by all plant means
+```{r}
+
+plotadj <- allcorrect(phenolong,c("fruitnum","days.to.bolt"),c("plantID","treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+
+plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+
+```
+

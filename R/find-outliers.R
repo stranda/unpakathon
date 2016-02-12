@@ -14,6 +14,6 @@ findOutlier <- function(pl,pheno,q=0.01)
     small <- tmpdf%>%filter(value<lbound)
     if (dim(small)[1]>0) small$direction <- "low"
     large <- tmpdf%>%filter(value>hbound)
-    if (dim(small)[1]>0) large$direction <- "high"
+    if (dim(large)[1]>0) large$direction <- "high"
     rbind(small,large)
 }

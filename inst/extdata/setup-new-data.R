@@ -43,9 +43,11 @@ ga <- collect(tbl(unpak_db,"GeneAccession"))
 phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
 phenowide <- left_join(phenowide,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
 
+datestamp <- data.frame(snapshot.date=date())
 save(file="../../data/independent.rda",independent)
 save(file="../../data/tdna.rda",tdna)
 save(file="../../data/phenowide.rda",phenowide)
 save(file="../../data/phenolong.rda",phenolong)
 save(file="../../data/geneont.rda",geneont)
+save(file="../../data/datestamp.rda",datestamp)
 

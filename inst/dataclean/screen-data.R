@@ -2,8 +2,11 @@
 ##
 library(unpakathon)
 phenos <- unique(phenolong$variable)
-outliertbl <- do.call(rbind,lapply(phenos,function(x)
-                                   {
-                                       findOutlier(phenolong,x,0.01)
-                                   })
-                      )
+#phenos <- phenos[!(phenos%in%"germinants.41d")]
+outlierlst <- lapply(phenos,function(x)
+                     {
+                         print(x)
+                         findOutlier(phenolong,x,0.01)
+                     })
+              
+sapply(outlierlst,dim)

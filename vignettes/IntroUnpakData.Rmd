@@ -9,13 +9,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The unpakathonJan2016 package is primarily a datafreeze of the unpak database at the end of Jan 2016.  
+The unpakathon package is primarily a datafreeze of the unpak database.  It also provides some functions to help work with these data.  
 
 This vignette shows how to interact with these data, once the package is installed and loaded into the current R session
 
 load the library
 ```{r}
-library(unpakathonJan2016)
+library(unpakathon)
+```
+#Snapshot Date
+After loading the package up using 'library()', the date of the snapshot is available:
+```{r}
+datestamp
 ```
 
 #Tables

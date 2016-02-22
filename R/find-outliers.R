@@ -9,6 +9,7 @@
 findOutlier <- function(pl,pheno,q=0.01)
 {
     tmpdf <- pl%>%filter(variable%in%pheno)
+    tmpdf$direction <- NA
     lbound <- quantile(pl$value,q)
     hbound <- quantile(pl$value,1-q)
     small <- tmpdf%>%filter(value<lbound)

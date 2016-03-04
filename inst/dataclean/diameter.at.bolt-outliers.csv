@@ -1,0 +1,4 @@
+"plantID","accession","treatment","experiment","meta.experiment","facility","variable","value","Gene_idGene","direction"
+12639,"SALK_110355C","control","1a2","1","COFC-GC1","diameter.at.bolt",314.4,"AT1G62630","high"
+15049,"CS22615","control","Phyt2A","phyt","BC-GC1","diameter.at.bolt",135.68,"","high"
+21220,"CS22647","control","1a3","1","COFC-GC4","diameter.at.bolt",120.8,"","high"

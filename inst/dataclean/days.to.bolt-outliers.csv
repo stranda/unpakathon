@@ -1,0 +1,5 @@
+"plantID","accession","treatment","experiment","meta.experiment","facility","variable","value","Gene_idGene","direction"
+19688,"CS70000","control","3pt2","3","COFC-GC2","days.to.bolt",-1,"","low"
+20043,"CS22647","control","3pt2","3","COFC-GC1","days.to.bolt",-1,"","low"
+27027,"SALK_021444C","control","Benedict_Expt3","3","COFC-GC2","days.to.bolt",-63,NA,"low"
+16437,"CS22611","control","Phyt2A","phyt","COFC-NGH","days.to.bolt",129,NA,"high"

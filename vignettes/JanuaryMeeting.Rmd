@@ -17,11 +17,13 @@ vignette: >
 
 ```{r,echo=F,results='hide'} 
 #Load some libraries
-library(unpakathonJan2016)
+suppressMessages({
+  library(unpakathon)
 library(dplyr)
 library(ggplot2)
 library(reshape)
 library(GGally)
+})
 ```
 
 #phenotypic distributions in the database

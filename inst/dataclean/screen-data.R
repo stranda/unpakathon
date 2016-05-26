@@ -1,12 +1,17 @@
 ##
 ##
 library(unpakathon)
+cut.prop <- 0.01  #this is the proportion of observations to clip from
+                  #both the top and bottom of the distribution
+
 phenos <- unique(phenolong$variable)
 #phenos <- phenos[!(phenos%in%"germinants.41d")]
 outlierlst <- lapply(phenos,function(x)
                      {
                          print(x)
-                         findOutlier(phenolong,x,0.01)
+                         df <- findOutlier(phenolong,x,cut.prop)
+                         print(dim(df))
+                         df
                      })
               
 #sapply(outlierlst,dim)

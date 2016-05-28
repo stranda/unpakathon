@@ -4,7 +4,8 @@ Version: 0.0.0.10
 Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut", "cre"))
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.2.3),
+    adjustPhenotypes
 License: what
 LazyData: true
 RoxygenNote: 5.0.1

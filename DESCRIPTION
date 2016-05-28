@@ -5,10 +5,11 @@ Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut",
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
     R (>= 3.2.3)
-License: What license is it under?
+License: what
 LazyData: true
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
-    reshape
+    reshape,
+    GGally
 VignetteBuilder: knitr

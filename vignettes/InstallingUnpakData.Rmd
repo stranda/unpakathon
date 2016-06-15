@@ -1,0 +1,26 @@
+---
+title: "Installing the unpak data snapshot"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Installing the unpak data snapshot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The unpakathon package is primarily a datafreeze of the unpak database.  It also provides some functions to help work with these data.  
+
+This vignette shows how to set up the environment
+
+#Prepping your computer
+
+This package is designed to work with any modern operating system, but has not been tested on very many.  Without a doubt, to use the package on any system, you will need to:
+
+ 1. Install R on your computer (go to http://www.r-project.org).  If you are an old hand and use R to do everything including cook your breakfast in the morning, you still might want to install the latest version (as of 6/14/16 that's version 3.3.0 (Supposedly Educational))
+ 2. Install rstudio desktop on your computer as well (go to https://www.rstudio.com/products/RStudio/#Desktop).  Same admonitions from above apply.  The latest version is: 0.99.902
+ 3. Oh yeah, for any of this to work, you might want to have a network connection.
+ 
+ 
+ #Installing the data package
+ 

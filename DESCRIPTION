@@ -5,12 +5,12 @@ Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut",
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
     R (>= 3.2.3),
-    adjustPhenotypes
+    adjustPhenotypes,
+    knitr,
+    reshape,
+    rmarkdown,
+    GGally
 License: what
 LazyData: true
 RoxygenNote: 5.0.1
-Suggests: knitr,
-    rmarkdown,
-    reshape,
-    GGally
 VignetteBuilder: knitr

@@ -9,7 +9,9 @@ Depends:
     knitr,
     reshape,
     rmarkdown,
-    GGally
+    GGally,
+    dplyr,
+    ggplot2
 License: what
 LazyData: true
 RoxygenNote: 5.0.1

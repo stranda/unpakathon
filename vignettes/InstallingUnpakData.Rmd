@@ -15,12 +15,34 @@ This vignette shows how to set up the environment
 
 #Prepping your computer
 
-This package is designed to work with any modern operating system, but has not been tested on very many.  Without a doubt, to use the package on any system, you will need to:
+This package is designed to work with any modern operating system, but has not been tested on very many (linux and windows 8).  Without a doubt, to use the package on any system, you will need to:
 
  1. Install R on your computer (go to http://www.r-project.org).  If you are an old hand and use R to do everything including cook your breakfast in the morning, you still might want to install the latest version (as of 6/14/16 that's version 3.3.0 (Supposedly Educational))
  2. Install rstudio desktop on your computer as well (go to https://www.rstudio.com/products/RStudio/#Desktop).  Same admonitions from above apply.  The latest version is: 0.99.902
- 3. Oh yeah, for any of this to work, you might want to have a network connection.
+ 3. Oh yeah, for any of this to work, you will need to have a network connection.
  
  
- #Installing the data package
+#Installing the data package
+
+The package is available through github and not on CRAN. What this means is that you will need to install from github.com rather than using the normal R package installation protocol.  To do that, however, you will have to install the remarkable package, "devtools".  Here's how:
+
+Start Rstudio and at the Rstudio console type:
+```{r,eval=FALSE}
+install.packages("devtools")
+```
+
+Once that completes, you can get crackin on the installation of our data on your computer:
+```{r,eval=F}
+library(devtools)
+install_github("stranda/adjustPhenotypes") #this package needs to be installed first
+install_github("stranda/unpakathon",force=T,build_vignettes=T)
+```
+These two "install_github()" commands will install a supporting package that I wrote (adjustPhenotypes) and then installs the main package called, "unpakathon".  This is going to take a while because unpakathon depends on lots of other packages which need to be installed.  They should be installed automatically, though.  When it finally ends, you should be able to say:
+```{r,eval=F}
+library(unpakathon)
+browseVignettes("unpakathon")
+```
+If you see a web-page with different "help documents" you were successful.  The IntroUnpakData vignette is a good place to start
+
+
  

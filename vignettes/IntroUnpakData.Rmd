@@ -17,7 +17,7 @@ load the library
 ```{r}
 library(unpakathon)
 ```
-#Snapshot Date
+#How do I know how fresh the data are?
 After loading the package up using 'library()', the date of the snapshot is available:
 ```{r}
 datestamp
@@ -98,30 +98,58 @@ or you could look at expression at flower stage 9
 ggplot(data=newdf, aes(x=AverageExpressFlowerStage9, y=log(value+1)))+geom_point()
 ```
 
-#Correcting phenotypes
+#Correcting phenotypes for within Growth Chamber variance, phytometers or col
 
 Everything so far has been performed on uncorrected phenotypes.
 
 We can correct phenotypes based on the Treatment, Experiment, and Facility combinations
 
-Here's an example correcting for phytometers
+Here's an example scaling data by the amount of variation in each experiment/facility combination
 
 ```{r}
 library(reshape)
 plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% cast(fun.aggregate=mean)
 
-
-plotadj <- phytcorrect(phenolong,c("fruitnum","days.to.bolt"),c("plantID","treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+plotadj <- phenolong %>%
+  filter(variable %in% c("fruitnum","days.to.bolt")) %>%
+  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
 
 plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
 plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
 
 ```
 
-And here correcting by all plant means
+Here's an example correcting for phytometers
+
+```{r}
+plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% cast(fun.aggregate=mean)
+
+plotadj <- phytcorrect(phenolong,pheno=c("fruitnum","days.to.bolt"),classifier = c("treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+
+plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+
+```
+
+And here correcting by columbia
 ```{r}
 
-plotadj <- allcorrect(phenolong,c("fruitnum","days.to.bolt"),c("plantID","treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+plotadj <- colcorrect(phenolong,pheno=c("fruitnum","days.to.bolt"),classifier = c("treatment","facility","experiment"),lineid="accession") %>% 
+  cast(meta.experiment+experiment+facility+treatment+accession+plantID~variable)
+plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+
+```
+
+
+And finally, scaling by stddev and then centering data on columbia
+```{r}
+
+plotadj <- phenolong %>%
+#  filter(variable %in% c("fruitnum","days.to.bolt")) %>%
+  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>%
+  colcorrect(,pheno=c("fruitnum","days.to.bolt"), classifier = c("treatment","facility","experiment"),lineid="accession") %>% 
+  cast(meta.experiment+experiment+facility+treatment+accession+plantID~variable)
 
 plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
 plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")

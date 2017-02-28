@@ -1,0 +1,21 @@
+---
+title: "How strata are organized in the unpak database"
+output: html_notebook
+---
+
+
+#Three levels of experimental organization
+
+Each experiment unpak conducts is given a different experiment name, '1a1'.  These can be nested within a meta.experiment name (such as '1' for the experiment above).  In addition it is possible to specify a block within each experiment.  This provides two levels of hierarchy in the experiments, though these levels might not always be treated the same.
+
+
+```{r include=F}
+library(igraph)
+library(unpakathon)
+```
+
+```{r}
+map=unique(phenolong[,c("experiment","meta.experiment")])
+plot(graph_from_data_frame(map))
+```
+

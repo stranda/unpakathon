@@ -13,7 +13,7 @@ dbInfo = read.table('../../../dbInfo.txt',as.is=T)
 
 con <- dbConnect(MySQL(),dbname=dbInfo[,1],user=dbInfo[,2],password=dbInfo[,3])
 query <- paste("SELECT Pl.idIndividualPlant, Pl.Accession_idAccession, T.name, E.name, E.meta, F.Name,",
-               " Ph.name, O.value",
+               " Ph.name, O.value, O.block",
                " FROM Observation O",
                " JOIN IndividualPlant Pl ON O.IndividualPlant_idIndividualPlant = Pl.idIndividualPlant",
                " JOIN Phenotype Ph ON O.Phenotype_idPhenotype = Ph.idPhenotype",
@@ -22,11 +22,12 @@ query <- paste("SELECT Pl.idIndividualPlant, Pl.Accession_idAccession, T.name, E
                " JOIN Facility F ON Pl.Facility_idFacility = F.idFacility;",
                sep="")
 phenolong <- dbGetQuery(con,query)
+expts <- dbGetQuery(con,"SELECT * FROM Experiment;")
 #head(phenolong)
 dbDisconnect(con)
 phenolong <-
     phenolong[,!names(phenolong)%in%c("Treatment","Facility","Experiment")]
-names(phenolong) <- c("plantID","accession","treatment","experiment","meta.experiment","facility","variable","value")
+names(phenolong) <- c("plantID","accession","treatment","experiment","meta.experiment","facility","variable","value","block")
 phenowide <- cast(phenolong,fun.aggregate=mean)
 #phenolong$phenotype <- phenolong$variable
 #phenolong <- phenolong[,!names(phenolong)%in%"variable"]
@@ -37,7 +38,7 @@ independent <- collect(tbl(unpak_db,"IndependentDataCache"))
 independent$accession <- independent$Accession_idAccession
 tdna <- collect(tbl(unpak_db,"TDNARatio"))
 tdna$accession <- tdna$Accession_idAccession
-geneont <- collect(tbl(unpak_db,"GeneOntology"))
+geneont <- collect(tbl(unpak_db,"GeneOntology"),n=Inf)
 ga <- collect(tbl(unpak_db,"GeneAccession"))
 
 phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))

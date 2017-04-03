@@ -1,6 +1,12 @@
 ---
-title: "How strata are organized in the unpak database"
-output: html_notebook
+title: "How data are organized into strata"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How data are organized in to strata in the unpak database}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -14,8 +20,11 @@ library(igraph)
 library(unpakathon)
 ```
 
-```{r}
+
+The following figure shows the relationship among meta experiments and the sub-components.  Many of the sub-components have blocking which though not shown here can be accessed in builtin R dataframes as the column 'block'
+```{r,echo=F,fig.width=6,fig.height=8,out.width=600,out.height=800}
 map=unique(phenolong[,c("experiment","meta.experiment")])
+map=map[map[,2]!="farm",]
 plot(graph_from_data_frame(map))
 ```
 

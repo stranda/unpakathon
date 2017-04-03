@@ -1,6 +1,6 @@
 Package: unpakathon
 Title: Code Used and Data Needed to work with unpak data
-Version: 0.0.0.10
+Version: 0.0.0.20
 Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut", "cre"))
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
@@ -11,7 +11,8 @@ Depends:
     rmarkdown,
     GGally,
     dplyr,
-    ggplot2
+    ggplot2,
+    igraph
 License: what
 LazyData: true
 RoxygenNote: 5.0.1

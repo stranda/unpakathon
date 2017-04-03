@@ -46,9 +46,15 @@ individual measurements identified by this technique (this should not really hav
 ##Status of outliers and database.  
 I'm planning on taking all the outlier information that April sent to me and do one hand-edit of the current database.  At this point, I think that will take a day, but I'd like to wait until I have all the experiment 2 data
 
+The main thing that I note from the main unpak experiments plotted below is that there are almost no really weird outliers.  Visual inspection of the raw data suggests that there are about 30 values that are ridiculous;  For the rest, I'd be hard pressed to rule them actual problem data points. So that's about 30 out of 313923 data points or an error rate of about 1 per 10,000 phenotypic measurements.  That's pretty good.
+
+
 ##plotting the outliers with the rest of the data for a trait/experiment combination
 
 The following million figures are all distributions of data so far with the findOutlier function and a cutoff of 0.1% point highlighted.
+
+
+
 
 ###One more thing:
 The number by each point is the plantID from the builtin phenolong and phenowide datasets.  To look at a particular plantID, you can say (plantID 21935 has a --too-- extreme fruitnum):
@@ -73,7 +79,7 @@ head(outliers)
 library(ggplot2)
 library(ggrepel)
 cutoff=0.001
-z.score=T
+z.score=F
 outliers=NULL
 for (pheno in unique(phenolong$variable))
   for (trt in unique(phenolong$treatment[phenolong$variable==pheno]))
@@ -84,8 +90,8 @@ for (pheno in unique(phenolong$variable))
     #print(trt)
     
     tmpdf = phenolong %>% filter(variable %in% pheno) %>% filter(treatment %in% trt) %>%
-      filter(meta.experiment %in% c("1","2","3")) 
-    if (!pheno%in%c("germinated","branch.basalbranch"))
+      filter(meta.experiment %in% c("1","2","3","phyt")) 
+    if (!pheno%in%c("germinated","branch.basalbranch","seeds.sown"))
       if ((dim(tmpdf)[1]>5)&(var(tmpdf$value,na.rm=T)>0))
       {
         if (z.score)
@@ -112,7 +118,8 @@ for (pheno in unique(phenolong$variable))
       }
   }
 ```
-```{r,include=F}
+```{r,eval=F}
+outliers = arrange(outliers,plantID,variable)
 save(file="../data/outliers.rda",outliers)
 write.csv(file="../inst/dataclean/outliers.csv",row.names=F,outliers)
 ```

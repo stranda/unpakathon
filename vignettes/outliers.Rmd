@@ -23,4 +23,97 @@ then make a long-format dataframe containing the identities of fruitnum outliers
 tmp = findOutlier(phenolong,"fruitnum",q=0.01,z.score=F)
 head(tmp)
 ```
+So the first 6 rows come from experiments cofc-1 and especially cofc-2 (the originals).  There are a total of 
+```{r}
+dim(tmp)[1]
+```
+individual measurements identified
+
+##adjusting for differences among chambers
+
+The 'z.score' value in the findOutlier function converts the phenotypes into numbers scaled by the sd in each growth chamber and then mean-subtracted.
+
+```{r}
+tmp = findOutlier(phenolong,"fruitnum",q=0.01,z.score=T)
+head(tmp)
+```
+In this case there are a lot of experiment 2 treatment A outliers that are appearing.  There are a total of 
+```{r}
+dim(tmp)[1]
+```
+individual measurements identified by this technique (this should not really have changed much because the data are the same as above and we are using quantiles).
+
+##Status of outliers and database.  
+I'm planning on taking all the outlier information that April sent to me and do one hand-edit of the current database.  At this point, I think that will take a day, but I'd like to wait until I have all the experiment 2 data
+
+##plotting the outliers with the rest of the data for a trait/experiment combination
+
+The following million figures are all distributions of data so far with the findOutlier function and a cutoff of 0.1% point highlighted.
+
+###One more thing:
+The number by each point is the plantID from the builtin phenolong and phenowide datasets.  To look at a particular plantID, you can say (plantID 21935 has a --too-- extreme fruitnum):
+```{r}
+phenolong%>%filter(plantID=="21935")
+```
+to get the long form, or 
+```{r}
+phenowide%>%filter(plantID=="21935")
+```
+to get the wide form.  
+
+A dataframe with just these outliers is available in the builtin R dataframe 'outliers' It's also in the 'dataclean' subdirectory of the unpackathon intall on your computer (look in the R library hierarchy).  You could look at that dataframe like this:
+```{r}
+head(outliers)
+```
+
+
+###ok here we go
+
+```{r, echo=F,out.width=690,fig.width=6,fig.height=6}
+library(ggplot2)
+library(ggrepel)
+cutoff=0.001
+z.score=T
+outliers=NULL
+for (pheno in unique(phenolong$variable))
+  for (trt in unique(phenolong$treatment[phenolong$variable==pheno]))
+  {
+#    pheno = "diameter.at.bolt"
+#    trt="C"
+    #print(pheno)
+    #print(trt)
+    
+    tmpdf = phenolong %>% filter(variable %in% pheno) %>% filter(treatment %in% trt) %>%
+      filter(meta.experiment %in% c("1","2","3")) 
+    if (!pheno%in%c("germinated","branch.basalbranch"))
+      if ((dim(tmpdf)[1]>5)&(var(tmpdf$value,na.rm=T)>0))
+      {
+        if (z.score)
+        {
+          tmpdf=scalePhenos(classifier=c("experiment","facility","treatment"),lineid="accession",dat=tmpdf)
+          tmpdf$value[!is.finite(tmpdf$value)] = NA
+          tmpdf$value=tmpdf$value - mean(tmpdf$value,na.rm=T)
+        }
+        tmpout=unique(findOutlier(tmpdf,pheno,cutoff))
+        if (dim(tmpout)[1]>1)
+        {
+          tmpdf=unique(merge(tmpdf,tmpout,all=T))
+          tmpdf$direction[is.na(tmpdf$direction)]="norm"
+          outliers = rbind(outliers,tmpout)
+          p = ggplot(tmpdf,aes(experiment,value)) + 
+            geom_boxplot(outlier.size=0) +
+            geom_point(data=tmpout,aes(colour=direction)) +
+            geom_text_repel(data=tmpout,aes(label=plantID)) +
+            ylab(paste0(pheno,ifelse(z.score==T," (scaled and centered)",""))) + 
+            ggtitle(paste0("treatment -> ",trt,";   phenotype ->",pheno)) +
+            theme(axis.text.x = element_text(angle = 90))
+          print(p)
+        }
+      }
+  }
+```
+```{r,include=F}
+save(file="../data/outliers.rda",outliers)
+write.csv(file="../inst/dataclean/outliers.csv",row.names=F,outliers)
+```
 

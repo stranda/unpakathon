@@ -12,7 +12,8 @@ Depends:
     GGally,
     dplyr,
     ggplot2,
-    igraph
+    igraph,
+    ggrepel
 License: what
 LazyData: true
 RoxygenNote: 5.0.1

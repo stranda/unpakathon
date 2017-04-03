@@ -1,30 +1,26 @@
 ---
-title: "How data are organized into strata"
+title: "Outliers in the unpak data"
 author: "A Strand"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How data are organized in to strata in the unpak database}
+  %\VignetteIndexEntry{Detecting outliers}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+#Outliers
 
-#Three levels of experimental organization
+unpakathon provides some functions to help detect outliers for any particular variable.
 
-Each experiment unpak conducts is given a different experiment name, '1a1'.  These can be nested within a meta.experiment name (such as '1' for the experiment above).  In addition it is possible to specify a block within each experiment.  This provides two levels of hierarchy in the experiments, though these levels might not always be treated the same.
-
-
-```{r include=F}
-library(igraph)
+First load the package
+```{r,message=F,warning=F}
 library(unpakathon)
 ```
 
-
-The following figure shows the relationship among meta experiments and the sub-components.  Many of the sub-components have blocking which though not shown here can be accessed in builtin R dataframes as the column 'block'
-```{r,echo=F,fig.width=6,fig.height=8,out.width=600,out.height=800}
-map=unique(phenolong[,c("experiment","meta.experiment")])
-map=map[map[,2]!="farm",]
-plot(graph_from_data_frame(map))
+then make a long-format dataframe containing the identities of fruitnum outliers.  Outliers are defined here as the top and bottom 1% of observations.  
+```{r}
+tmp = findOutlier(phenolong,"fruitnum",q=0.01,z.score=F)
+head(tmp)
 ```
 

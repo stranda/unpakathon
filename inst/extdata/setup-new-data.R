@@ -1,10 +1,11 @@
 #
-# run to create files in the 'data' subdir
+# run to create files in the 'data' subdir. run when db changes
 #
 # should result in
 # a file called 'phenowide'
 # a file called 'phenolong'
-#
+# and several others
+
 library(reshape)
 library(dplyr)
 library(unpakR)

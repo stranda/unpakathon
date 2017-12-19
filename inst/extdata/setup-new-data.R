@@ -4,7 +4,7 @@
 # should result in
 # a file called 'phenowide'
 # a file called 'phenolong'
-# and several others
+                                        # and several others
 
 library(reshape)
 library(dplyr)

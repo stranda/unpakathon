@@ -1,0 +1,33 @@
+---
+title: "Where is the variation located in unPAK?"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Where is the variation located in unPAK?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+#Three levels of experimental organization
+
+
+```{r include=F}
+library(VCA)
+library(unpakathon)
+library(dplyr)
+```
+
+```{r}
+
+pl = phenolong%>%filter(meta.experiment=="1", variable=="fruitnum") %>%
+    mutate(institution=gsub("-GC.","",facility)) %>%
+    mutate(knockout=grepl("SALK",accession)) %>%
+    mutate(knockout=ifelse(grepl("60000",accession),F,knockout))
+
+fit1 = anovaMM(value~(institution)+(institution/facility), Data=pl)
+
+print(fit1)
+
+```

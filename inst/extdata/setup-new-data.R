@@ -24,6 +24,7 @@ query <- paste("SELECT Pl.idIndividualPlant, Pl.Accession_idAccession, T.name, E
                sep="")
 phenolong <- dbGetQuery(con,query)
 expts <- dbGetQuery(con,"SELECT * FROM Experiment;")
+
 #head(phenolong)
 dbDisconnect(con)
 phenolong <-
@@ -45,6 +46,10 @@ ga <- collect(tbl(unpak_db,"GeneAccession"))
 phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
 phenowide <- left_join(phenowide,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
 
+geneaccession=ga
+print(dim(geneaccession))
+
+
 datestamp <- data.frame(snapshot.date=date())
 save(file="../../data/independent.rda",independent)
 save(file="../../data/tdna.rda",tdna)
@@ -52,4 +57,5 @@ save(file="../../data/phenowide.rda",phenowide)
 save(file="../../data/phenolong.rda",phenolong)
 save(file="../../data/geneont.rda",geneont)
 save(file="../../data/datestamp.rda",datestamp)
-
+print("saving geneaccession")
+save(file="../../data/geneaccession.rda",geneaccession)

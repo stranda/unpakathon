@@ -1,0 +1,37 @@
+---
+title: "How to work with methylation and unpak data"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Methylation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+#There are a couple of built-in dataframes in unpakathon that provide information on methylation.
+
+The first is 'methData' which just provides a map of methylation sites throughout the genome
+
+```{r cache=T}
+library(unpakathon)
+head(methData)
+```
+
+The second is the "allfeat" dataframe that contains coordinates for
+genes and features of genes for all loci (or at least all ATXGXXXXX
+entries in TAIR10)
+
+
+```{r cache=T}
+head(allfeat)
+```
+
+
+This bit of code creates a new dataframe that has the methylation locations for loci
+
+```{r cache=T}
+
+```
+

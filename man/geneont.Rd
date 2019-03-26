@@ -7,4 +7,3 @@
 \description{
 gene ontology data
 }
-

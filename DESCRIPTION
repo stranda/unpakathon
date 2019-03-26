@@ -16,5 +16,5 @@ Depends:
     ggrepel
 License: what
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

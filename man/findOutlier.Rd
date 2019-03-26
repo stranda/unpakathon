@@ -4,7 +4,7 @@
 \alias{findOutlier}
 \title{Identify Outliers}
 \usage{
-findOutlier(pl, pheno, q = 0.01)
+findOutlier(pl, pheno, q = 0.01, z.score = F)
 }
 \arguments{
 \item{pl}{phenotype file (long)}
@@ -12,5 +12,9 @@ findOutlier(pl, pheno, q = 0.01)
 \item{pheno}{is a phenotype}
 
 \item{q}{the quantile}
-}
 
+\item{z.score}{if true converts the phenotypes to z-scores scaled by the sd in their own growth-chamber}
+}
+\description{
+Identify Outliers
+}

@@ -7,4 +7,3 @@
 \description{
 This data frame contains the typical type of dataset: one row per individual with lots of columns
 }
-

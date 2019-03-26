@@ -13,10 +13,12 @@ plotChrom <- function(pheno,
                       adjust=c(0,1,2,3)[2],
                       chromo = 1,
                       meta=c("3"),
-                      span=1
+                      span=1,
+                      lines=NULL
                       )
 {
-  pl <- filter(phenolong,meta.experiment %in% meta) %>% filter(variable == pheno[1])
+    if (is.null(lines)) lines <- unique(phenolong$accession) 
+  pl <- filter(phenolong,meta.experiment %in% meta) %>% filter(variable == pheno[1]) %>% filter(accession %in% lines)
   if (adjust==0) adj = pl else
     if (adjust ==1) adj  = pl %>% adjustPhenotypes::colcorrect(classifier=c("experiment","facility"),pheno) %>% 
                                      adjustPhenotypes::scalePhenos(pheno=pheno,classifier=c("experiment","facility")) else
@@ -27,6 +29,6 @@ plotChrom <- function(pheno,
   linemeans <- group_by(adj,accession,variable) %>% summarize(mn=mean(value)) %>% 
     left_join(geneaccession,by=c("accession"="Accession_idAccession")) %>% mutate(SALK=gsub("C","",accession))
  linemeans <- linemeans %>% left_join(SalkPos) %>% mutate(chrom=as.numeric(gsub("Chr","",chrom))) %>% filter(chrom==chromo)
- ggplot(linemeans,aes(x=pos,y=mn))+geom_point()+geom_smooth(span=span)
+ ggplot(linemeans,aes(x=pos,y=mn))+geom_point()+geom_smooth(span=span)+ylab(pheno)+xlab(paste("Chromosome",chromo,"position"))
 
  }

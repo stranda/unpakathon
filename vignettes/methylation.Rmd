@@ -6,7 +6,7 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Methylation}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteEncoding{UTF-8} 
 ---
 
 
@@ -14,7 +14,7 @@ vignette: >
 
 The first is 'methData' which just provides a map of methylation sites throughout the genome
 
-```{r cache=T}
+```{r}
 library(unpakathon)
 head(methData)
 ```
@@ -24,14 +24,14 @@ genes and features of genes for all loci (or at least all ATXGXXXXX
 entries in TAIR10)
 
 
-```{r cache=T}
+```{r}
 head(allfeat)
 ```
 
 
-This bit of code creates a new dataframe that has the methylation locations for loci
+This dataframe has the methylation locations for loci
 
-```{r cache=T}
+```{r}
 
 ```
 

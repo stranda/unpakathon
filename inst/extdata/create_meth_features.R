@@ -29,13 +29,12 @@ lst <- mclapply(as.character(unique(methData$chrom)),mc.cores=5,function(chrm)
     {
         p1 <- (searchmeth[,1]<=md$pos[i])
         p2 <-  (searchmeth[,2]>=md$pos[i])
-        p3 <- (allmeth$chrom==md$chrom[i])
-        feats <- which((p1*p2*p3)>0)
+        feats <- which((p1*p2)>0)
         if (length(feats)>0)
         {
             allmeth$methsites[feats] <- allmeth$methsites[feats] + 1
         }
-        if (!(i%%1000)) print (paste(round(100*i/dim(md)[1],2),"% done for",chrm))
+        if (!(i%%10000)) print (paste(round(100*i/dim(md)[1],2),"% done for",chrm))
     }
     allmeth
 })

@@ -7,6 +7,25 @@
 load("../../data/all_arab_features.rda")
 load("../../data/salk_positions.rda")
 
+noloc <- which(substr(SalkPos$locus,1,2)!="AT")
+if (length(noloc)>0)
+{
+    locs <- sapply(noloc,function(l)
+    {
+        as.character(allfeat[(allfeat$chrom==gsub("Chr","",as.character(SalkPos$chrom[l]))) &
+                             (allfeat$begin <= SalkPos$pos[l]) &
+                             (allfeat$end >= SalkPos$pos[l]) &
+                             (allfeat$feature=="gene"),"locus"][1])
+    })
+    noloc.found = noloc[!is.na(locs)]
+    if (length(noloc.found)>0)
+        {
+            SalkPos$locus <- as.character(SalkPos$locus)
+            SalkPos$locus[noloc.found] <- locs[!is.na(locs)]
+            save(file="../../data/salk_positions.rda",SalkPos)
+        }
+}
+
 library(parallel)
 
 SalkPos$chrom <- gsub("Chr","",SalkPos$chrom)

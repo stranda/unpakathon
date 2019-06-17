@@ -13,7 +13,8 @@ Depends:
     dplyr,
     ggplot2,
     igraph,
-    ggrepel
+    ggrepel,
+    VCA
 License: what
 LazyData: true
 RoxygenNote: 6.1.1

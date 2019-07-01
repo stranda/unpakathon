@@ -1,6 +1,6 @@
 Package: unpakathon
 Title: Code Used and Data Needed to work with unpak data
-Version: 0.0.0.24
+Version: 0.0.0.30
 Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut", "cre"))
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
@@ -15,6 +15,7 @@ Depends:
     igraph,
     ggrepel,
     VCA
+Remotes: stranda/adjustPhenotypes
 License: what
 LazyData: true
 RoxygenNote: 6.1.1

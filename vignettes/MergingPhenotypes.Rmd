@@ -1,0 +1,70 @@
+---
+title: "Putting phenotypic together with other information"
+author: "A Strand"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Merging  phenotypic data with other information}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+#Classification information (and possible independent variables)
+##built right into the phenotypic dataframes
+
+The phenotypic data frame(s) already have a large amount of information about things that might affect the response of Columbia to having a gene knocked out.  A lot of these describe differences in the environment.  For example 'institution', 'facility', 'treatment', and 'block' fall into this category.  In addition genetic differences and similarities can be assessed by examining the response of different accessions to the same environment.
+
+Here is an example of the differences that might occur among environments and different lines.  
+
+Lines connect the same line in different growth-chamber/greenhouse runs
+
+```{r}
+
+plotdf <- phenolong%>%filter(variable %in% c("fruitnum"))%>%
+  group_by(experiment, facility, variable, accession) %>%
+  summarise(value=mean(value)) %>% 
+  mutate(salk=grepl("SALK",accession), env=paste(experiment,facility,sep="-")) 
+
+plotdf2 <- data.frame(left_join(plotdf,plotdf %>% group_by(env,variable) %>% summarise(envmean=mean(value))) ) #sometimes dplyr needs reminding that it works with data.frames
+
+plotdf2$env = as.factor(plotdf2$env)
+plotdf2$env = reorder(plotdf2$env,plotdf2$envmean,mean,na.rm=T)
+
+ggplot(plotdf2,aes(x=env,y=value,color=salk,group=accession)) + geom_line(alpha=0.2) + 
+  scale_y_continuous(trans="log1p") +
+  scale_x_discrete() + 
+  ylab("fruitnum")+xlab("environment (experiment/growthchamber combinations)") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+Environment (but look at all the crossing lines!) sure plays a huge role in trait value...
+
+
+##Folding in other types of explanatory variables.  There are a number of dataframes that comprise the majority of unpakathon.  These are (not necessarily exhaustively):
+
+phenolong, independent, geneont, allfeat, allmeth, SalkPos, SalkInsert, and tdna
+
+Each of these dataframes can be examined by (for example the dataframe 'independent'):
+
+```{r}
+head(independent)
+```
+
+So if one wanted to examine the effects of age of gene on fruitnum resulting from knocking out genes, it would look like this:
+
+```{r}
+
+plotdf <- phenolong %>%
+  filter(variable %in% "fruitnum") %>%
+  phytcorrect(classifier = c("facility","experiment")) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% 
+  left_join(independent) %>%
+  spread()
+
+ggplot(plotdf,aes(x=InsertLocation,y=fruitnum)) + geom_boxplot()
+```
+

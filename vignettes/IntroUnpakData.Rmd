@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting going with unpak data}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 The unpakathon package is primarily a datafreeze of the unpak database.  It also provides some functions to help work with these data.  
@@ -106,55 +108,107 @@ We can correct phenotypes based on the Treatment, Experiment, and Facility combi
 
 Here's an example scaling data by the amount of variation in each experiment/facility combination.
 
-The first line gives a good intuition into how one can filter on just a few variables in the long format and then "spread" them so that variables can be compared to one another.
+I'm using 'phenos' as the name of a vector to capture the names of a couple of phenotypes.  This could be a single phenotype or many. 
+
+The first real line 
+ gives a good intuition into how one can filter on just a few variables in the long format and then "spread" them so that variables can be compared to one another.
+
+The rest of the lines of code create dataframes that have the trait variables adjusted by means of columbia or scaled by sd or both.
+
+
 
 ```{r}
 
-plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% spread()
+phenos = c("fruitnum","days.to.bolt")
+
+plotraw = phenolong %>% filter(variable %in% phenos) %>% spread()
+
+plotscale <- phenolong %>%
+  filter(variable %in% phenos) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% spread()
 
 plotadj <- phenolong %>%
-  filter(variable %in% c("fruitnum","days.to.bolt")) %>%
-  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>% spread()
+  filter(variable %in% phenos) %>%
+  colcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  spread()
 
-plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
-plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+plot.all <- phenolong %>%
+  filter(variable %in% phenos) %>%
+  colcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% 
+  spread()
 
-```
-
-Here's an example correcting for phytometers
-
-```{r}
-plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% cast(fun.aggregate=mean)
-
-plotadj <- phytcorrect(phenolong,pheno=c("fruitnum","days.to.bolt"),classifier = c("treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
-
-plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
-plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
-
-```
-
-And here correcting by columbia
-```{r}
-
-plotadj <- colcorrect(phenolong,pheno=c("fruitnum","days.to.bolt"),classifier = c("treatment","facility","experiment"),lineid="accession") %>% 
-  cast(meta.experiment+experiment+facility+treatment+accession+plantID~variable)
-plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
-plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+par(mfrow=c(2,2))
+plot(fruitnum~days.to.bolt,data=plotraw,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotscale,main="scaled by std. dev.")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted by columbia mean.")
+plot(fruitnum~days.to.bolt,data=plot.all,main="scaled and adjusted by columbia mean")
 
 ```
 
 
-And finally, scaling by stddev and then centering data on columbia
+
+Here is a version with the adjustment done by the mean of the phytometers in each chamber/time combo rather than the mean of columbia alone.
+
 ```{r}
+
+phenos = c("fruitnum","days.to.bolt")
 
 plotadj <- phenolong %>%
-#  filter(variable %in% c("fruitnum","days.to.bolt")) %>%
-  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>%
-  colcorrect(,pheno=c("fruitnum","days.to.bolt"), classifier = c("treatment","facility","experiment"),lineid="accession") %>% 
-  cast(meta.experiment+experiment+facility+treatment+accession+plantID~variable)
+  filter(variable %in% phenos) %>%
+  phytcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  spread()
 
-plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
-plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")
+plot.all <- phenolong %>%
+  filter(variable %in% phenos) %>%
+  phytcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% 
+  spread()
+
+par(mfrow=c(2,2))
+plot(fruitnum~days.to.bolt,data=plotraw,main="unadjusted")
+plot(fruitnum~days.to.bolt,data=plotscale,main="scaled by std. dev.")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted by columbia mean.")
+plot(fruitnum~days.to.bolt,data=plot.all,main="scaled and adjusted by columbia mean")
 
 ```
 
+You could easily make 'phenos' longer and look at multivariable relationships:
+
+
+```{r}
+
+phenos = c("fruitnum","days.to.bolt","diameter.at.bolt")
+
+plot.all <- phenolong %>%
+  filter(variable %in% phenos) %>%
+  phytcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% 
+  spread() 
+
+library(GGally)
+ggpairs(plot.all,columns=phenos)
+
+```
+
+Of course, these are all based on individual data points.  It might make sense to take the means of accessions. 
+
+
+```{r}
+
+phenos = c("fruitnum","days.to.bolt","diameter.at.bolt")
+
+plot.all <- phenolong %>%
+  filter(variable %in% phenos) %>%
+  phytcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  scalePhenos(classifier = c("facility","experiment")) %>% 
+  group_by(facility, experiment,variable,accession) %>%    ##group the data before
+  summarise(value=mean(value,na.rm=T)) %>%                 ##taking the mean
+  spread() 
+
+library(GGally)
+ggpairs(plot.all,columns=phenos)
+
+```
+
+Now we're talking.

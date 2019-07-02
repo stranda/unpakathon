@@ -25,7 +25,7 @@ Here is an example of the differences that might occur among environments and di
 
 Lines connect the same line in different growth-chamber/greenhouse runs
 
-```{r}
+```{r fig.width=8, fig.height=8}
 
 plotdf <- phenolong%>%filter(variable %in% c("fruitnum"))%>%
   group_by(experiment, facility, variable, accession) %>%
@@ -37,11 +37,11 @@ plotdf2 <- data.frame(left_join(plotdf,plotdf %>% group_by(env,variable) %>% sum
 plotdf2$env = as.factor(plotdf2$env)
 plotdf2$env = reorder(plotdf2$env,plotdf2$envmean,mean,na.rm=T)
 
-ggplot(plotdf2,aes(x=env,y=value,color=salk,group=accession)) + geom_line(alpha=0.2) + 
+ggplot(plotdf2,aes(x=env,y=value,color=salk,group=accession)) + geom_line() + 
   scale_y_continuous(trans="log1p") +
   scale_x_discrete() + 
   ylab("fruitnum")+xlab("environment (experiment/growthchamber combinations)") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size=rel(0.75)))
 
 ```
 

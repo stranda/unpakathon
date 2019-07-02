@@ -2,5 +2,6 @@
 
 export(findOutlier)
 export(plotChrom)
+export(spread)
 import(dplyr)
 import(ggplot2)

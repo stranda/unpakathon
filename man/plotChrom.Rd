@@ -5,7 +5,7 @@
 \title{plot a phenotype along a chromosome}
 \usage{
 plotChrom(pheno, adjust = c(0, 1, 2, 3)[2], chromo = 1,
-  meta = c("3"), span = 1)
+  meta = c("3"), span = 1, lines = NULL)
 }
 \arguments{
 \item{pheno}{is a phenotype}

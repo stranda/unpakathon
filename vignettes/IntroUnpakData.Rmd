@@ -35,14 +35,19 @@ Here are the tables at the moment and  a list of their current column names
 #phenolong: long format for all the phenotypic data
 names(phenolong)
 #phenowide: wide (typical) format for phenotypic data in phenolong
-names(phenowide)
-#independent: a table of indepenent data, mostly gene expression and protein expression 
-#indexed by both SALK_Line and Gene
 names(independent)
 ##tdna: tdna data we know what it is.  indexed by accession
 names(tdna)
 #geneont The tair10 gene ontology indexed by gene
 names(geneont)
+#allfeat
+names(allfeat)
+#allmeth
+names(allmeth)
+#SalkPos
+names(SalkPos)
+#SalkInsert
+names(SalkInsert)
 ```
 
 #Experiments and Meta Experiments
@@ -85,20 +90,6 @@ ggplot(data=exp1,aes(x=days.to.bolt,y=fruitnum))+geom_point()
 ```
 might be nice to see whats with that point at 765 fruits
 
-#Merging with other data
-The information in the other tables can be compared to phenotypes through merging.
-
-Say you wanted to look at how insertion location might influence phenotype.  You could merge in the 'independent' table and look at the result
-
-```{r}
-newdf <- left_join(phenolong,independent) %>% filter(variable=="fruitnum")
-ggplot(data=newdf, aes(x=InsertLocation, y=log(value+1)))+geom_boxplot()
-```
-
-or you could look at expression at flower stage 9
-```{r}
-ggplot(data=newdf, aes(x=AverageExpressFlowerStage9, y=log(value+1)))+geom_point()
-```
 
 #Correcting phenotypes for within Growth Chamber variance, phytometers or col
 
@@ -129,16 +120,16 @@ plotscale <- phenolong %>%
 
 plotadj <- phenolong %>%
   filter(variable %in% phenos) %>%
-  colcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  colcorrect(classifier = c("facility","experiment")) %>%
   spread()
 
 plot.all <- phenolong %>%
   filter(variable %in% phenos) %>%
-  colcorrect(classifier = c("facility","experiment"), pheno=phenos) %>%
+  colcorrect(classifier = c("facility","experiment")) %>%
   scalePhenos(classifier = c("facility","experiment")) %>% 
   spread()
 
-par(mfrow=c(2,2))
+
 plot(fruitnum~days.to.bolt,data=plotraw,main="unadjusted")
 plot(fruitnum~days.to.bolt,data=plotscale,main="scaled by std. dev.")
 plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted by columbia mean.")
@@ -165,11 +156,11 @@ plot.all <- phenolong %>%
   scalePhenos(classifier = c("facility","experiment")) %>% 
   spread()
 
-par(mfrow=c(2,2))
+
 plot(fruitnum~days.to.bolt,data=plotraw,main="unadjusted")
 plot(fruitnum~days.to.bolt,data=plotscale,main="scaled by std. dev.")
-plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted by columbia mean.")
-plot(fruitnum~days.to.bolt,data=plot.all,main="scaled and adjusted by columbia mean")
+plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted by phyt mean.")
+plot(fruitnum~days.to.bolt,data=plot.all,main="scaled and adjusted by phyt mean")
 
 ```
 

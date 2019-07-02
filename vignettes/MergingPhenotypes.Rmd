@@ -11,6 +11,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r include=F}
+library(unpakathon)
+```
+
 
 #Classification information (and possible independent variables)
 ##built right into the phenotypic dataframes
@@ -44,7 +48,9 @@ ggplot(plotdf2,aes(x=env,y=value,color=salk,group=accession)) + geom_line(alpha=
 Environment (but look at all the crossing lines!) sure plays a huge role in trait value...
 
 
-##Folding in other types of explanatory variables.  There are a number of dataframes that comprise the majority of unpakathon.  These are (not necessarily exhaustively):
+##Folding in other types of explanatory variables.  
+
+There are a number of dataframes that comprise the majority of unpakathon.  These are (not necessarily exhaustively):
 
 phenolong, independent, geneont, allfeat, allmeth, SalkPos, SalkInsert, and tdna
 
@@ -63,8 +69,24 @@ plotdf <- phenolong %>%
   phytcorrect(classifier = c("facility","experiment")) %>%
   scalePhenos(classifier = c("facility","experiment")) %>% 
   left_join(independent) %>%
-  spread()
+  group_by(ConservedGroup,variable,accession) %>%
+  summarise(value=mean(value)) %>% spread()
 
-ggplot(plotdf,aes(x=InsertLocation,y=fruitnum)) + geom_boxplot()
+ggplot(plotdf,aes(x=ConservedGroup,y=fruitnum)) + geom_boxplot()
+
+table(plotdf$ConservedGroup) #but small samples in the left hand boxes
+
+```
+
+Say you wanted to look at how insertion location might influence phenotype.  You could merge in the 'independent' table and look at the result
+
+```{r}
+newdf <- left_join(phenolong,independent) %>% filter(variable=="fruitnum")
+ggplot(data=newdf, aes(x=InsertLocation, y=log(value+1)))+geom_boxplot()
+```
+
+or you could look at expression at flower stage 9
+```{r}
+ggplot(data=newdf, aes(x=AverageExpressFlowerStage9, y=log(value+1)))+geom_point()
 ```
 

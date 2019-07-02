@@ -104,15 +104,17 @@ Everything so far has been performed on uncorrected phenotypes.
 
 We can correct phenotypes based on the Treatment, Experiment, and Facility combinations
 
-Here's an example scaling data by the amount of variation in each experiment/facility combination
+Here's an example scaling data by the amount of variation in each experiment/facility combination.
+
+The first line gives a good intuition into how one can filter on just a few variables in the long format and then "spread" them so that variables can be compared to one another.
 
 ```{r}
-library(reshape)
-plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% cast(fun.aggregate=mean)
+
+plotdf = phenolong %>% filter(variable %in% c("fruitnum","days.to.bolt")) %>% spread()
 
 plotadj <- phenolong %>%
   filter(variable %in% c("fruitnum","days.to.bolt")) %>%
-  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>% cast(fun.aggregate=mean)
+  scalePhenos(classifier = c("treatment","facility","experiment"),lineid="accession") %>% spread()
 
 plot(fruitnum~days.to.bolt,data=plotdf,main="unadjusted")
 plot(fruitnum~days.to.bolt,data=plotadj,main="adjusted")

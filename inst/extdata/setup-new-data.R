@@ -50,9 +50,11 @@ unpak_db <- src_mysql(dbname="unpak",host = "localhost", user = dbInfo[,2], pass
 
 independent <- collect(tbl(unpak_db,"IndependentDataCache"))
 independent$accession <- independent$Accession_idAccession
+independent$locus <- independent$Gene_idGene
 tdna <- collect(tbl(unpak_db,"TDNARatio"))
 tdna$accession <- tdna$Accession_idAccession
 geneont <- collect(tbl(unpak_db,"GeneOntology"),n=Inf)
+geneont$locus <- geneont$Gene_idGene
 ga <- collect(tbl(unpak_db,"GeneAccession"))
 
 phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))

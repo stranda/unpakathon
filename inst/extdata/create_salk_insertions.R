@@ -65,6 +65,7 @@ for (i in 1:dim(SalkPos)[1])
 SalkInsert <- rbind(SalkInsert,newlines)
 SalkInsert <- SalkInsert[order(SalkInsert$chrom,SalkInsert$locus,SalkInsert$feature,SalkInsert$transcript,SalkInsert$order),]
 rownames(SalkInsert) <- 1:dim(SalkInsert)[1]
+SalkInsert$accession <- SalkInsert$SALK_Line
 
 save(file="../../data/SalkInsert.rda",SalkInsert)
 

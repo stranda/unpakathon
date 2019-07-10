@@ -32,6 +32,6 @@ head(allfeat)
 This dataframe has the methylation locations for loci
 
 ```{r}
-
+head(allmeth)
 ```
 

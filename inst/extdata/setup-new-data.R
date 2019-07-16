@@ -28,9 +28,9 @@ frc <- sapply(strsplit(phenolong$plantnum_experiment,"-"),function(x){x})
 
 frc <- as.data.frame(t(sapply(strsplit(phenolong$plantnum_experiment,"-"),function(x){if (length(x)>0) c(x[1],x[2],x[3]) else NULL})))
 names(frc) <- c("flat","row","column")
-frc$flat <- as.numeric(frc$flat)
+frc$flat <- as.numeric(as.character(frc$flat))
 frc$row <- toupper(frc$row)
-frc$column <- as.numeric(frc$column)
+frc$column <- as.numeric(as.character(frc$column))
 
 phenolong  <- cbind(phenolong,frc)
 expts <- dbGetQuery(con,"SELECT * FROM Experiment;")

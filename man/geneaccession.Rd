@@ -5,5 +5,5 @@
 \title{Just holds accession numbers and corresponding ATI locus ids}
 \format{one row per SALK_Line}
 \description{
-three columns: 'idGeneAccession' (index), 'Accession_idAccession' (SALK Lines/Ecotypes),'Gene_idGene' (ATI ids)
+three columns: 'idGeneAccession' (index), 'accession' (SALK Lines/Ecotypes),'locus' (ATI ids)
 }

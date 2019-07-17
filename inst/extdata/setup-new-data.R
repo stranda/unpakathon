@@ -57,10 +57,11 @@ geneont <- collect(tbl(unpak_db,"GeneOntology"),n=Inf)
 geneont$locus <- geneont$Gene_idGene
 ga <- collect(tbl(unpak_db,"GeneAccession"))
 
-phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
-phenowide <- left_join(phenowide,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession"))
+phenolong <- left_join(phenolong,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession")) %>% mutate(locus=Gene_idGene) %>% select(-Gene_idGene)
+phenowide <- left_join(phenowide,ga[,!names(ga)%in%c("idGeneAccession")],by=c("accession"="Accession_idAccession")) %>% mutate(locus=Gene_idGene) %>% select(-Gene_idGene)
 
 geneaccession=ga
+names(geneaccession)=c("idGeneAccession","accession","locus")
 print(dim(geneaccession))
 
 

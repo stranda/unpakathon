@@ -27,7 +27,7 @@ plotChrom <- function(pheno,
             adj  = pl %>% adjustPhenotypes::allcorrect(classifier=c("experiment","facility"),pheno) %>% 
               adjustPhenotypes::scalePhenos(pheno=pheno,classifier=c("experiment","facility"))
   linemeans <- group_by(adj,accession,variable) %>% summarize(mn=mean(value)) %>% 
-    left_join(geneaccession,by=c("accession"="Accession_idAccession")) %>% mutate(SALK=gsub("C","",accession))
+    left_join(geneaccession) %>% mutate(SALK=gsub("C","",accession))
  linemeans <- linemeans %>% left_join(SalkPos) %>% mutate(chrom=as.numeric(gsub("Chr","",chrom))) %>% filter(chrom==chromo)
  ggplot(linemeans,aes(x=pos,y=mn))+geom_point()+geom_smooth(span=span)+ylab(pheno)+xlab(paste("Chromosome",chromo,"position"))
 

@@ -3,6 +3,8 @@
 export(findOutlier)
 export(mutationCat)
 export(plotChrom)
+export(slideWinGenes)
+export(slideWinMeth)
 export(spread)
 import(dplyr)
 import(ggplot2)

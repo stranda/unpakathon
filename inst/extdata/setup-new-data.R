@@ -64,6 +64,12 @@ geneaccession=ga
 names(geneaccession)=c("idGeneAccession","accession","locus")
 print(dim(geneaccession))
 
+families <- read.csv("tair.csv")
+families <- families[,c(1,2,3,10,12,6)]
+names(families)[6] <- "locus"
+families$locus <- toupper(as.character(families$locus))
+
+families[families=="NULL"] <- NA
 
 datestamp <- data.frame(snapshot.date=date())
 save(file="../../data/independent.rda",independent)
@@ -72,5 +78,6 @@ save(file="../../data/phenowide.rda",phenowide)
 save(file="../../data/phenolong.rda",phenolong)
 save(file="../../data/geneont.rda",geneont)
 save(file="../../data/datestamp.rda",datestamp)
+save(file="../../data/families.rda",families)
 print("saving geneaccession")
 save(file="../../data/geneaccession.rda",geneaccession)

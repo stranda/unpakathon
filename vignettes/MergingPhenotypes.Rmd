@@ -16,8 +16,8 @@ library(unpakathon)
 ```
 
 
-#Classification information (and possible independent variables)
-##built right into the phenotypic dataframes
+# Classification information (and possible independent variables)
+## built right into the phenotypic dataframes
 
 The phenotypic data frame(s) already have a large amount of information about things that might affect the response of Columbia to having a gene knocked out.  A lot of these describe differences in the environment.  For example 'institution', 'facility', 'treatment', and 'block' fall into this category.  In addition genetic differences and similarities can be assessed by examining the response of different accessions to the same environment.
 
@@ -48,7 +48,7 @@ ggplot(plotdf2,aes(x=env,y=value,color=salk,group=accession)) + geom_line() +
 Environment (but look at all the crossing lines!) sure plays a huge role in trait value...
 
 
-##Folding in other types of explanatory variables.  
+## Folding in other types of explanatory variables.  
 
 There are a number of dataframes that comprise the majority of unpakathon.  These are (not necessarily exhaustively):
 

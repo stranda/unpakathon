@@ -3,7 +3,9 @@
 \name{families}
 \alias{families}
 \title{TAIR10 Gene families indexed by gene}
-\format{one row per gene}
+\format{
+one row per gene
+}
 \description{
 gene family data
 }

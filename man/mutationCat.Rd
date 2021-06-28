@@ -4,8 +4,7 @@
 \alias{mutationCat}
 \title{takes a vector of accession numbers and returns a vector of mut. categories}
 \usage{
-mutationCat(accession, catnames = c("Columbia", "TDNA-mutant",
-  "Phytometer"))
+mutationCat(accession, catnames = c("Columbia", "TDNA-mutant", "Phytometer"))
 }
 \arguments{
 \item{accession}{vector of accession numbers}

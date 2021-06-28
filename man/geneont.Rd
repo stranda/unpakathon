@@ -3,7 +3,9 @@
 \name{geneont}
 \alias{geneont}
 \title{TAIR10 Gene Ontology indexed by gene}
-\format{one or more rows per gene}
+\format{
+one or more rows per gene
+}
 \description{
 gene ontology data
 }

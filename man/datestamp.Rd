@@ -3,7 +3,9 @@
 \name{datestamp}
 \alias{datestamp}
 \title{last update of unpakathon data}
-\format{one row}
+\format{
+one row
+}
 \description{
 row with a date
 }

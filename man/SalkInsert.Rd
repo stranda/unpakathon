@@ -3,7 +3,9 @@
 \name{SalkInsert}
 \alias{SalkInsert}
 \title{dataframe with the insert positions (within genes) of all the Salk Lines}
-\format{one row per accession}
+\format{
+one row per accession
+}
 \description{
 Contains the insert position and the feature in which it is inserted of salk TDNA insert lines relative to TAIR10
 }

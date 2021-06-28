@@ -3,7 +3,9 @@
 \name{geneaccession}
 \alias{geneaccession}
 \title{Just holds accession numbers and corresponding ATI locus ids}
-\format{one row per SALK_Line}
+\format{
+one row per SALK_Line
+}
 \description{
 three columns: 'idGeneAccession' (index), 'accession' (SALK Lines/Ecotypes),'locus' (ATI ids)
 }

@@ -3,7 +3,9 @@
 \name{independent}
 \alias{independent}
 \title{Wide Format Version of additional quantitative information on genes}
-\format{one row per SALK_Line}
+\format{
+one row per SALK_Line
+}
 \description{
 mostly gene expression but also protein information and some ages of genes and insert locations
 }

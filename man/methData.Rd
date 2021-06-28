@@ -3,7 +3,9 @@
 \name{methData}
 \alias{methData}
 \title{Locations and positions of methylation sites in the TAIR10 genome}
-\format{one row per site.}
+\format{
+one row per site.
+}
 \description{
 Has three columns that specify the chromosome, position, and type of methylation in the genome
 }

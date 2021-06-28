@@ -3,7 +3,9 @@
 \name{phenowide}
 \alias{phenowide}
 \title{Wide Format Version of The unpak Phenotypes}
-\format{one row per individual}
+\format{
+one row per individual
+}
 \description{
 This data frame contains the typical type of dataset: one row per individual with lots of columns
 }

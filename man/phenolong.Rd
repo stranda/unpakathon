@@ -3,7 +3,9 @@
 \name{phenolong}
 \alias{phenolong}
 \title{Long Format Version of The unpak Phenotypes}
-\format{one row per observation}
+\format{
+one row per observation
+}
 \description{
 This data frame contains the following columns: "plantID" "accession" "meta.experiment" "facility" "locus" "treatment" "value" "experiment" "phenotype".  The value column contains the actual observations the rest of the columns are used in classifying the observation
 }

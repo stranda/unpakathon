@@ -3,7 +3,9 @@
 \name{allfeat}
 \alias{allfeat}
 \title{all of the TAIR10 genes and sub-features with coordinates}
-\format{one or more rows per locus/feature combination}
+\format{
+one or more rows per locus/feature combination
+}
 \description{
 contains the start and stop coordinates in TAIR10 for each gene or subfeature. Index by "locus"
 }

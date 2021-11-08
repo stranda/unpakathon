@@ -12,5 +12,5 @@ the loci that have been phenotyped in unpak.
 
 To use, you will need to use the function 'loadRDS()' like this:\\
 
-variants = readRDS(paste0(system.file(package="unpakathon"),"extdata/variants.RDS"))
+variants = readRDS(paste0(system.file(package="unpakathon"),"/extdata/variants.RDS"))
 }

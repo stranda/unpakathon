@@ -1,6 +1,6 @@
 Package: unpakathon
 Title: Code Used and Data Needed to work with unpak data
-Version: 0.0.0.33
+Version: 0.0.0.34
 Authors@R: person("Allan", "Strand", email = "stranda@cofc.edu", role = c("aut", "cre"))
 Description: Houses unpak data snapshot, supporting code and vignettes
 Depends:
@@ -19,6 +19,6 @@ Suggests:
     markdown
 Remotes: stranda/adjustPhenotypes
 License: what
-LazyData: false
+LazyData: true
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

@@ -8,5 +8,9 @@ one or more rows per locus/variant-type/strain(line) combination
 }
 \description{
 Contains the variant information for all 1001 genome lines for each of
-the loci that have been phenotyped in unpak
+the loci that have been phenotyped in unpak.
+
+To use, you will need to use the function 'loadRDS()' like this:\\
+
+variants = loadRDS(paste0(system.file(package="unpakathon"),"extdata/variants.RDS"))
 }
